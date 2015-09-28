@@ -71,7 +71,7 @@ router.delete('/project/:id', function(req, res, next){
     if(err){
       res.json({'message': err});
     } else {
-      res.json({'DELETED' : data});
+      res.json({'REMOVED' : data});
     }
   })
 })
