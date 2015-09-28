@@ -9,4 +9,4 @@ var Project = new Schema({
   group_members: [String]
 });
 
-module.exports = mongoose.model('projects', Project);
+module.exports = mongoose.model('project', Project);

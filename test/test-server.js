@@ -11,7 +11,8 @@ var should = chai.should();
 chai.use(chaiHttp);
 
 describe('Projects', function(){
-  // ******************************
+
+  // ************HOOK***************
   Project.collection.drop();
 
   beforeEach(function(done){
@@ -32,9 +33,9 @@ describe('Projects', function(){
   });
   // ******************************
 
-  it('should list ALL projects on /projects GET', function(done) {
+  it('should list ALL projects on /api/projects GET', function(done) {
   chai.request(server)
-    .get('/projects')
+    .get('/api/projects')
     .end(function(err, res){
       res.should.have.status(200);
       res.should.be.json;
@@ -43,14 +44,17 @@ describe('Projects', function(){
   });
 
 
-  it('should list a SINGLE project on /project/<id> GET', function(done) {
+  it('should list a SINGLE project on /api/project/<id> GET', function(done) {
     var newProject = new Project({
-      name: 'Super',
-      lastName: 'man'
+      name: 'Reddit Clone',
+      description: "Show off new Angular skills",
+      tags: ["CSS", "HTML", "Angular"],
+      group: false,
+      group_members: []
     });
     newProject.save(function(err, data) {
       chai.request(server)
-        .get('/project/'+data.id)
+        .get('/api/project/'+data.id)
         .end(function(err, res){
           res.should.have.status(200);
           res.should.be.json;
@@ -60,13 +64,26 @@ describe('Projects', function(){
   });
 
 
-  it('should update a SINGLE project on /project/<id> PUT', function(done) {
+
+  it('should add a SINGLE project on /projectss POST', function(done) {
   chai.request(server)
-    .get('/projects')
+    .post('/api/projects')
+    .send({'name': 'Game Library', 'description': 'Create lists of games', 'tags': ['JavaScript', 'HTML'], 'group': false, 'group_members': []})
+    .end(function(err, res){
+      res.should.have.status(200);
+      res.should.be.json;
+      done();
+    });
+  });
+
+
+  it('should update a SINGLE project on /api/project/<id> PUT', function(done) {
+  chai.request(server)
+    .get('/api/projects')
     .end(function(err, res){
       chai.request(server)
-        .put('/project/'+res.body[0]._id)
-        .send({'name': 'Spider'})
+        .put('/api/project/'+res.body[0]._id)
+        .send({'name': 'Cabin Sort'})
         .end(function(error, response){
           response.should.have.status(200);
           response.should.be.json;
@@ -76,12 +93,12 @@ describe('Projects', function(){
   });
 
 
-  it('should delete a SINGLE project on /project/<id> DELETE', function(done) {
+  it('should delete a SINGLE project on /api/project/<id> DELETE', function(done) {
   chai.request(server)
-    .get('/projects')
+    .get('/api/projects')
     .end(function(err, res){
       chai.request(server)
-        .delete('/project/'+res.body[0]._id)
+        .delete('/api/project/'+res.body[0]._id)
         .end(function(error, response){
           response.should.have.status(200);
           response.should.be.json;
