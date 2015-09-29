@@ -10,3 +10,7 @@ a {
 .container {
   max-width: 500px;
 }
+
+.tableContainer {
+  min-width: 700px;
+}
